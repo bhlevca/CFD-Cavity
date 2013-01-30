@@ -1,0 +1,131 @@
+
+
+
+
+c------put ap zero at the boundaries
+      do 20 j=1,nj                ! Nodes start from 1 to nj for Y direction where 1 and nj are located at walls; I have half cells at Boundries
+      do 20 i=1,ni
+         ap(i,j,1)=small
+         ap(i,j,nk)=small
+20    continue
+      do 30 k=1,nk
+      do 30 i=1,ni
+         ap(i,1,k)=small
+         ap(i,nj,k)=small
+30    continue
+      do 40 k=1,nk
+      do 40 j=1,nj
+         ap(1,j,k)=small
+         ap(ni,j,k)=small
+40    continue
+
+c------calculate coefficients
+      do 102 k= 2,nkm1
+      do 102 j= 2,njm1
+      do 102 i= 2,nim1
+
+c------calculate coefficients ae & aw
+c---------east face
+         dene=fx(i,j,k)*den(i+1,j,k)+(1.-fx(i,j,k))*den(i,j,k)   !  fx(i,j,k) is a geometrical coeffiecient, for your geometry is simply 0.5
+         ape=fx(i,j,k)*ap(i+1,j,k)+(1.-fx(i,j,k))*ap(i,j,k)      !   ap is from momentum equaiton
+         vole=fx(i,j,k)*vol(i+1,j,k)+(1.-fx(i,j,k))*vol(i,j,k)
+         ae(i,j,k)= dene*vole*deksi(i,j,k)/ape                   !  deksi is :    deksi=Area/dx 
+         aw(i,j,k)= ae(i-1,j,k)
+c
+c------calculate coefficients an & as
+c---------north face
+         denn=fy(i,j,k)*den(i,j+1,k)+(1.-fy(i,j,k))*den(i,j,k)
+         apn=fy(i,j,k)*ap(i,j+1,k)+(1.-fy(i,j,k))*ap(i,j,k)
+         voln=fy(i,j,k)*vol(i,j+1,k)+(1.-fy(i,j,k))*vol(i,j,k)
+         an(i,j,k)= denn*voln*dneta(i,j,k)/apn
+         as(i,j,k)= an(i,j-1,k)
+
+c------calculate coefficients ah & al
+c---------high face
+         denh=fz(i,j,k)*den(i,j,k+1)+(1.-fz(i,j,k))*den(i,j,k)
+         aph=fz(i,j,k)*ap(i,j,k+1)+(1.-fz(i,j,k))*ap(i,j,k)
+         volh=fz(i,j,k)*vol(i,j,k+1)+(1.-fz(i,j,k))*vol(i,j,k)
+         ah(i,j,k)= denh*volh*dhzeta(i,j,k)/aph
+         al(i,j,k)= ah(i,j,k-1)
+
+c---------calculate source terms
+         su(i,j,k)= -smp(i,j,k)      ! SMP is the continuity error (See below to see how it is calculated in the previous Sub.)
+         sp(i,j,k)= 0.0
+
+  102 continue
+
+c----------boundaries
+      do 120 j=1,nj
+      do 120 i=1,ni
+         al(i,j,2)=small
+         ah(i,j,nkm1)=small
+120   continue
+      do 130 k=1,nk
+      do 130 i=1,ni
+         as(i,2,k)=small
+         an(i,njm1,k)=small
+130   continue
+      do 140 k=1,nk
+      do 140 j=1,nj
+         aw(2,j,k)=small
+         ae(nim1,j,k)=small
+140   continue
+
+c
+chapter  2  2  2  2  2  2  2  problem modifications  2  2  2  2  2  2  2
+c
+      call modpp               ! You don't need this section
+c
+chapter 3 final coefficient assembly
+c
+      do 300 k= 2,nkm1
+      do 300 j= 2,njm1
+      do 300 i= 2,nim1
+
+c--------calculate the residual
+         if (-sp(i,j,k).ne.great) resor(pp)=resor(pp)+dabs(smp(i,j,k))
+
+       
+c---------store ap for u, v & w in smp
+         smp(i,j,k)=ap(i,j,k)                            ! this is for programing effieciency purposes, you don't need to do that
+         ap(i,j,k)= an(i,j,k)+as(i,j,k)+ae(i,j,k)+aw(i,j,k)
+     &             +ah(i,j,k)+al(i,j,k)-sp(i,j,k)
+
+c--------set pp to zero
+         phi(i,j,k,pp)=0.
+         
+ 300  continue
+c
+chapter  4  4  4  solution of difference equation  4  4  4  4  4  4  4  4  4  4
+c
+
+      call SolvingLinearEq(pp) 
+ 
+chapter5  5  5  5  correct convection terms and pressure  5  5  5  5  5  5
+
+...
+      
+c------extrapolate the pressure and the pressure correction to the boundaries
+
+...
+
+c------correct nodal velocities
+
+....
+
+      End 
+      
+ 
+ ******************************************************************
+ ******************************************************************
+  This is calculated in Convection Sub.:
+ 
+c------calculate the continuity error
+      do 400 k=2,nkm1
+      do 400 j=2,njm1
+      do 400 i=2,nim1
+         smp(i,j,k)=convn(i,j,k)-convn(i,j-1,k)
+     &             +conve(i,j,k)-conve(i-1,j,k)
+     &             +convh(i,j,k)-convh(i,j,k-1)    
+
+ 400  continue

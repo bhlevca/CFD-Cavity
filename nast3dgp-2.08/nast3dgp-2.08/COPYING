@@ -1,0 +1,52 @@
+License
+
+License Agreement for the Software Package NaSt3DGP
+
+between the Institut für Angewandte Mathematik der Rheinischen Friedrich-Wilhelms Universität Bonn - hereinafter referred as licenser - and YOU - hereinafter referred as licensee.
+
+
+§ 1 Object of Agreement
+
+The licenser lets to the licensee the right of the temporarily unrestricted use of the software package NaSt3DGP.
+
+
+§ 2 Property and Copyright
+
+The licenser is the owner of all rights of NaSt3DGP including all contributions made by others. We do this to make the code freely available on one hand, and on the other hand, to synchronize and steer the further development. Of course we appreciate and acknowledge the contributions of others by maintaing the "Thanks" section. You can also add 'Programmed by ...' comments in the code that you contribute. If this is unacceptable for you, then don't contribute code.
+
+The licensee agrees to publish scientific results obtained with NaSt3DGP with an appropriate citation of the licenser. Details for appropriate citation
+are stated in the next section.
+
+
+§ 3 Appropriate Citation
+
+The licensee agrees that any reports or published results obtained with the Software NaSt3DGP will acknowledge its use by the appropriate
+citation of the licenser as follows:
+                                                                                                                                                             
+``NaSt3DGP was developed by the research group in the Division of Scientific Computing and Numerical Simulation at the University of Bonn.''
+                                                                                                                                                             
+                                                                                                                                                             
+Any published work which utilizes NaSt3DGP shall include the following references:
+
+1. M. Griebel, T. Dornseifer and T. Neunhoeffer, Numerical Simulation in Fluid Dynamics, a
+     Practical Introduction, SIAM, Philadelphia,(1998)
+
+
+§ 4 Obligations of the Licensee
+
+It is in the licensees responsibility that all employees and students with access to NaSt3DGP follow the restrictions of this agreement.
+
+It is not permitted to sell NaSt3DGP or parts of it or results obtained with it. Furthermore, it is not allowed to use NaSt3DGP for any commercial purposes.
+
+Any modifications or extensions made by the licensee fall under these stipulations.
+
+
+§ 5 Liability
+
+NaSt3DGP is an experimental code. The licenser does not guarantee that NaSt3DGP is error free and that it complies to the special requirements of the licensee. The licenser does not assume any liability.
+
+
+§ 6 Supplementary Provisions
+
+The agreement shall be governed and construed in accordance with German law. The place of jurisdiction is Bonn/Germany.
+

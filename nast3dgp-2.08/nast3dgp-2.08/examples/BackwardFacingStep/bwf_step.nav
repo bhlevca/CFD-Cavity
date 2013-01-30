@@ -1,0 +1,57 @@
+//
+// Example: Backward facing step
+//
+
+dimension {
+    length     <5.0, 1.0, 1.0> 
+    resolution <100, 20, 20>    
+}
+
+parameter {
+    prstep     10             // Number of time steps between rewrite of data file
+
+    itermax   100              // max. number of iterations for poisson equation
+    eps       1e-8             // stop value for residual
+
+    alpha     0.8              // hybrid boundary stencil; 0.0=central differences, 1.0=upwind
+
+    Tfin      1000             // final time
+    deltmax   0.02             // max. time step
+
+    tfdiff    0.2              // 'security' factor. time step restrictions due to diff. terms
+    tfconv    0.2              // CFL - number 
+
+    reynolds  500              // Reynolds number
+    gx        0.0              // constant forcing terms
+    gy        0.0              // 
+    gz        0.0              //
+
+    TimeDis           AB2       // EU1=Euler ,AB2=Adams-Bashfort
+    ConvectiveTerms   SMART     // DC, QUICK, HLPA, SMART, VONOS
+    PoissonSolver     BiCGStab  // RedBlack, 8ColorSOR, 8ColorSSOR, BICGStab
+
+    TargetDirectory   .         // where to write files in chronological order
+    TimePrintStep     0.1       // physical time step for file writing
+
+    periodboundz               // periodic boundary in z-direction 
+}
+
+box{
+	coords<1,11,1>,<100,20,20>
+	init <1,0,0>,0.0
+	fluid
+}
+
+box {                 
+	coords<0,11,1>,<0,20,20>
+	inflow <1.0,0.0,0.0> 
+} 
+
+box {                
+	north
+	inout 2,1
+}  
+
+box {
+	coords<1,1,1>,<10,10,20>
+}

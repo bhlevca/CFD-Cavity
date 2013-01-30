@@ -1,0 +1,95 @@
+# basic makefile for MSVC++ under WindowsNT
+
+# commands:
+#RM = rm -f
+RM = del
+
+#******** Compile *******
+#CPP = mpiCC
+CPP = cl.exe 
+
+# standard C++ compile options
+#CPP_OPT = -O3 -c -Wall -pedantic -ansi 
+ 
+# DEBUG build
+CPP_OPT = /nologo /MLd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE"\ /D "_MBCS" /FD /c 
+# RELEASE build
+CPP_OPT = /nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c  
+
+#
+# NAST3DGP specific options:
+#
+# NOPARALLEL     // compile serial code, 
+#                // if not defined a parallel code is generated, in this case 
+#                 // you must be able to compile and link codes with a MPI library !
+#
+# NDEBUG         // assert.h
+# TIMED          // switch time mesurement on 	       
+# ADAPTIVE_OMG   // adaptive relaxation parameter S.omg for SOR iteration
+#
+# Simple         // simple SOR
+# SimpleSSOR     // simple symmetric SOR (fw/bw)
+# RedBlack       // red-black iteration scheme   (default) 
+# Color          // 8-Color SOR                     
+# ColorSSOR      // 8-Color symmetric SOR (fw/bw)
+#
+# dc             // Donor-Cell (hybrid scheme)
+# quick          // Quadratic upwind interpolation for convective kinematics (QUICK) (2nd-Order) 
+# hlpa           // Hybrid-Linear Parabolic Appoximation (HLPA) (2nd-Order)
+# smart          // Sharp and Monotonic Algorithm for Realistic Transport (SMART) (2nd-Order)
+# vonos          // Variable-Order Non-Oscillatory Scheme (VONOS) (2nd/3rd-Order)   (default)
+#
+
+#CPP_NASTOPT = -DNOPARALLEL
+CPP_NASTOPT = /D "NOPARALLEL"
+
+#******** Link *******
+#LN = mpiCC
+LN = link.exe
+
+#LN_OPT = -o
+LN_OPT = /nologo /subsystem:console /incremental:no /machine:I386 /out:
+ 
+# VC 5 libs definition not necessary
+LIBS = kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
+ advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
+ odbccp32.lib 
+LIBS =
+
+#*********************
+
+# objects 
+OBJ_EXT = obj 
+
+OBJSNAVC  = navier.$(OBJ_EXT)  poisson.$(OBJ_EXT) navcalc.$(OBJ_EXT) \
+            main.$(OBJ_EXT)    bound.$(OBJ_EXT)   parmpi.$(OBJ_EXT)  \
+            typen.$(OBJ_EXT)
+
+OBJSSETUP = navier.$(OBJ_EXT)  object.$(OBJ_EXT)     parse.$(OBJ_EXT) \
+            typen.$(OBJ_EXT)    navsetup.$(OBJ_EXT)  tokenizer.$(OBJ_EXT)
+
+HEADERS = typen.h      matrix.h   navier.h \
+         parallel.h   list.h     parse.h
+ 
+#NAVCALC = ../bin/navcalc 
+#NAVSETUP = ../bin/navsetup 
+NAVCALC = ..\bin\navcalc 
+NAVSETUP = ..\bin\navsetup 
+
+# $(LN_OPT)$(NAVCALC) necessary for /out:NAME
+default: $(OBJSNAVC) $(OBJSSETUP)
+#	$(LN) $(LN_OPT) $(NAVCALC)  $(OBJSNAVC) $(LIBS) 
+#	$(LN) $(LN_OPT) $(NAVSETUP) $(OBJSSETUP) $(LIBS) 
+	$(LN) $(LN_OPT)$(NAVCALC)  $(OBJSNAVC) $(LIBS) 
+	$(LN) $(LN_OPT)$(NAVSETUP) $(OBJSSETUP) $(LIBS) 
+
+clean: 
+	$(RM) *.$(OBJ_EXT)
+	$(RM) $(NAVCALC)
+	$(RM) $(NAVSETUP)
+
+# rules
+.SUFFIXES: .h .cxx .$(OBJ_EXT)
+.cxx.$(OBJ_EXT):
+	$(CPP) $(CPP_OPT) $(CPP_NASTOPT) $<
+

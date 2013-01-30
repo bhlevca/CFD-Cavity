@@ -1,0 +1,13 @@
+2004-12-07
+- Bugfix release.
+  - fixed a bug appearing with gcc version 3.4.2
+  - fixed a bug in the matlab script cavity.m
+  - fixed viewNaSt3DGP.tcl compatibility with VTK-4.4 
+2004-09-10 (release of version 2.07)
+- Bugfix release.
+2004-03-23 
+- Bugfix release.
+2003-08-13 (release of version 2.05)
+- NaSt3DGP now ships with autoconf'iscated build system.
+2003-08-22
+- Tcl/Tk GUI for vtk visualisation included

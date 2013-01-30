@@ -1,0 +1,29 @@
+## This Makefile snippet contains parts common to the serial
+## (in src/) and to the parallel (in mpi/) part of the build.
+
+NAVHEADERS = \
+	$(NAVSRCDIR)/convective.h \
+	$(NAVSRCDIR)/list.h \
+	$(NAVSRCDIR)/matrix.h \
+	$(NAVSRCDIR)/navier.h \
+	$(NAVSRCDIR)/parallel.h \
+	$(NAVSRCDIR)/typen.h
+
+COMMONSRC = \
+	$(NAVSRCDIR)/navier.cxx \
+	$(NAVSRCDIR)/typen.cxx
+
+CALCSRC = \
+	$(NAVSRCDIR)/bound.cxx \
+	$(NAVSRCDIR)/main.cxx \
+	$(NAVSRCDIR)/navcalc.cxx \
+	$(NAVSRCDIR)/parmpi.cxx \
+	$(NAVSRCDIR)/convective.cxx \
+	$(NAVSRCDIR)/poisson.cxx
+
+
+TOKENIZERSRC = \
+	$(NAVSRCDIR)/tokenizer.cxx \
+	$(NAVSRCDIR)/tokenizer.h
+
+# vim:ft=automake:

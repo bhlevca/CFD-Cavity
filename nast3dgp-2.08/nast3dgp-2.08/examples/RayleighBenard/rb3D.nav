@@ -1,0 +1,53 @@
+//
+// Temperature-driven convection (Rayleigh-Benard flow)
+//
+
+dimension {
+    length     <4.0, 1.0, 2.0>
+    resolution <65,17,20>  
+}
+
+parameter {
+    prstep    50                // number of time steps between rewrite of data file
+
+    itermax   30                // max. number of iterations for poisson equation
+    eps       1e-5              // stop value for residual in iteration process
+
+    TempRef   293		// reference temperature
+    beta      3.4e-3		// volume expansion coefficient
+    prandtl   0.72		// Prandtl number
+
+    Tfin      30000.0           // final time
+    deltmax   1.0               // max. time step
+
+    tfdiff    0.2               // 'security' factor for time step restrictions due to diff. terms
+    tfconv    0.2               // CFL - number
+    alpha     0.5               // hybrid boundary stencil; 0=central differences, 1=upwind 
+
+    reynolds  6657.479345       // Reynolds number 
+    gx        0.0               // constant forcing terms
+    gy       -9.81              //     "       "      "
+    gz        0.0               //     "       "      "
+
+    periodboundx                // periodic boundaries in x-direction
+    periodboundz                // periodic boundaries in z-direction
+
+    TimeDis           AB2       // EU1=Euler ,AB2=Adams-Bashfort 
+    ConvectiveTerms   SMART     // DC, QUICK, HLPA, SMART, VONOS
+    PoissonSolver     BiCGStab  // RedBlack, 8ColorSOR, 8ColorSSOR, BICGStab
+
+    TargetDirectory   .         // where to write files in chronological order
+    TimePrintStep     5.0       // physical time step for file writing
+}
+
+box{
+  east
+  inflow <0,0,0>
+  temperature 293.5 
+}
+
+box{
+  west 
+  inflow <0,0,0> 
+  temperature 292.5
+}

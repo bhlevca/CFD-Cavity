@@ -1,0 +1,12 @@
+This is the readme for NaSt3DGP.
+NaSt3DGP is a parallel solver for the threedimensional
+incompressible Navier-Stokes-equations.
+
+Please see the file INSTALL for information on
+how to install NaSt3DGP on your system.
+
+Important files of the distribution:
+doc/userguide.pdf - documentation on how NaSt3DGP works
+	(this gets installed in $prefix/doc/nast3dgp where prefix is the
+	directory you specified on the configure command-line.
+COPYING contains the license under which NaSt3DGP is released.

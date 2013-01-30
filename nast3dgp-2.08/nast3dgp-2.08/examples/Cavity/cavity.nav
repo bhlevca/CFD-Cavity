@@ -1,0 +1,42 @@
+//
+// Example: Driven Cavity flow at moderate Re number
+//
+
+dimension {
+    length     <1.0, 1.0, 0.15> 
+    resolution < 32, 32, 6>    
+}
+
+parameter {
+    prstep    10                // Number of time steps between rewrite of data file
+
+    itermax   100               // max. number of iterations for poisson equation
+    eps       1e-9              // stop value for residual in iteration process
+
+    Tfin      2.0               // final time
+    deltmax   0.01              // max. time step
+
+    tfdiff    0.1               // 'security' factor. time step restrictions due to diff. terms
+    tfconv    0.1               // CFL - Zahl 
+
+    reynolds  1000              // Reynolds number
+    gx        0.0               // constant forcing terms
+    gy        0.0               // 
+    gz        0.0               //
+
+    alpha             1.0       // hybrid boundary stencil; 0=central differences, 1=upwind
+    TimeDis           AB2       // EU1=Euler ,AB2=Adams-Bashfort 
+    ConvectiveTerms   SMART     // DC, QUICK, HLPA, SMART, VONOS
+    PoissonSolver     BiCGStab  // RedBlack, 8ColorSOR, 8ColorSSOR, BICGStab
+    
+    TargetDirectory   .         // where to write files in chronological order
+    TimePrintStep     0.1       // physical time step for file writing
+
+    periodboundz                // periodic boundaries in z-direction
+}
+
+
+box {                           // set BC for upper side
+ west                           // homogeneous bc for all other sides
+ inflow <-1.0,0.0,0.0>          // are automaticly generated
+} 
